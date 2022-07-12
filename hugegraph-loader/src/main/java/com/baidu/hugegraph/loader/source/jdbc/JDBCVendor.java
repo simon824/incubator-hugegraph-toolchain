@@ -321,11 +321,23 @@ public enum JDBCVendor {
 
     public String buildSelectSql(JDBCSource source, Line nextStartRow) {
         StringBuilder builder = new StringBuilder();
-        builder.append("SELECT * FROM ")
-               .append(source.schema()).append(".").append(source.table());
+        //builder.append("SELECT * FROM ")
+        //       .append(source.schema()).append(".").append(source.table());
+        if (source.existsCustomSQL()) {
+            builder.append(source.customSQL());
+        } else {
+            builder.append("SELECT * FROM ")
+                   .append(source.schema()).append(".").append(source.table());
+        }
         if (nextStartRow != null) {
-            builder.append(" WHERE ")
-                   .append(this.buildGteClauseInCombined(nextStartRow));
+            //builder.append(" WHERE ")
+            //       .append(this.buildGteClauseInCombined(nextStartRow));
+            if (!builder.toString().toUpperCase().contains(" WHERE ")) {
+                builder.append(" WHERE ");
+            } else {
+                builder.append(" AND ");
+            }
+            builder.append(this.buildGteClauseInCombined(nextStartRow));
         }
         builder.append(" LIMIT ").append(source.batchSize() + 1)
                .append(";");

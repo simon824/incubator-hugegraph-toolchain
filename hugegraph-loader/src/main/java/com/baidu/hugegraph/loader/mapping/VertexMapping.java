@@ -30,12 +30,16 @@ public class VertexMapping extends ElementMapping {
     private final String idField;
     @JsonProperty("unfold")
     private final boolean unfold;
+    // 是否开启属性和属性值以建值对方式存储在两个数据库字段中
+    @JsonProperty("dm_kv_attributes")
+    private final String dmKvAttributes;
 
     @JsonCreator
     public VertexMapping(@JsonProperty("id") String idField,
                          @JsonProperty("unfold") boolean unfold) {
         this.idField = idField;
         this.unfold = unfold;
+        this.dmKvAttributes = null;
     }
 
     @Override
@@ -54,6 +58,14 @@ public class VertexMapping extends ElementMapping {
 
     public boolean unfold() {
         return this.unfold;
+    }
+
+    public boolean existsDmKvAttributes() {
+        return this.dmKvAttributes != null;
+    }
+
+    public String dmKvAttributes() {
+        return this.dmKvAttributes;
     }
 
     @Override

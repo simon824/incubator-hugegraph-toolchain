@@ -29,6 +29,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"type", "vendor"})
 public class JDBCSource extends AbstractSource {
 
+    // 是否翻页，默认true为翻页，如果表没有自增的唯一id需要配置为false
+    @JsonProperty("dm_page")
+    private boolean page = true;
     @JsonProperty("custom_sql")
     private String customSQL;
     @JsonProperty("vendor")
@@ -75,6 +78,11 @@ public class JDBCSource extends AbstractSource {
     public String customSQL() {
         return this.customSQL;
     }
+
+    public boolean page() {
+        return this.page;
+    }
+
 
     public boolean existsCustomSQL() {
         return this.customSQL != null;

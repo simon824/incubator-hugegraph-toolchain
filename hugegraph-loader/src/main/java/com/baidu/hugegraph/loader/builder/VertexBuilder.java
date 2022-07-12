@@ -19,8 +19,10 @@
 
 package com.baidu.hugegraph.loader.builder;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.baidu.hugegraph.loader.executor.LoadContext;
 import com.baidu.hugegraph.loader.mapping.InputStruct;
@@ -53,6 +55,37 @@ public class VertexBuilder extends ElementBuilder<Vertex> {
 
     @Override
     public List<Vertex> build(String[] names, Object[] values) {
+        // values 的第三个值是属性的 key，values 的第四个值是属性的 value
+
+        if (this.mapping.existsDmKvAttributes()) {
+            String[] s = this.mapping.dmKvAttributes().split(",");
+            String[] finalNames = new String[names.length - 1];
+            Object[] finalValues = new Object[values.length - 1];
+            int nameTag = -1;
+            for (int i = 0; i < names.length; i++) {
+                if (names[i].equals(s[0])) {
+                    finalNames[i] = (String) values[2];
+                    nameTag = i; // 属性键所在的位置 （注意sql select 时要将属性键放在属性值前面）
+                } else if (names[i].equals(s[1])) {
+                    finalValues[nameTag] = values[i]; // 属性值所在的位置要与键对应
+                    nameTag = -2; // 标记找到了属性值
+                } else {
+                    if (!"id".equals(names[i])) { //剔除 id 字段，id 为 mysql 的 primaryKey ，图的属性键里没有定义
+                        // id 字段。
+                        if (nameTag == -2) { //属性值所在字段放到了与属性键对应的位置，所以空了一位，i需要减1不然会越界。
+                            finalNames[i - 1] = names[i];
+                            finalValues[i - 1] = values[i];
+                        } else {
+                            finalNames[i] = names[i];
+                            finalValues[i] = values[i];
+                        }
+                    }
+                }
+            }
+
+            names = Arrays.stream(finalNames).filter(Objects::nonNull).toArray(String[]::new);
+            values = Arrays.stream(finalValues).filter(Objects::nonNull).toArray(Object[]::new);
+        }
         VertexKVPairs kvPairs = this.newKVPairs(this.vertexLabel,
                                                 this.mapping.unfold());
         kvPairs.extractFromVertex(names, values);
@@ -89,7 +122,7 @@ public class VertexBuilder extends ElementBuilder<Vertex> {
         } else {
             // The id strategy is automatic
             throw new IllegalArgumentException(
-                      "Unsupported AUTOMATIC id strategy for hugegraph-loader");
+                    "Unsupported AUTOMATIC id strategy for hugegraph-loader");
         }
     }
 }

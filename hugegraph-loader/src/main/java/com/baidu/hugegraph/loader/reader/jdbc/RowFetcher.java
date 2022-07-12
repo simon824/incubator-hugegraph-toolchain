@@ -125,15 +125,18 @@ public class RowFetcher {
                         this.source.table());
     }
 
+    public int i = 0;
     public List<Line> nextBatch() throws SQLException {
         if (this.fullyFetched) {
             return null;
         }
 
-        String select = this.source.existsCustomSQL() ?
+        String select = !this.source.page() ?
                         this.source.customSQL() :
                         this.source.vendor().buildSelectSql(this.source, this.nextStartRow);
 
+        i += this.source.batchSize();
+        System.out.println(i);
         LOG.debug("The sql for select is: {}", select);
 
         List<Line> batch = new ArrayList<>(this.source.batchSize() + 1);
@@ -160,7 +163,7 @@ public class RowFetcher {
             throw e;
         }
 
-        if (this.source.existsCustomSQL() || batch.size() != this.source.batchSize() + 1) {
+        if (!this.source.page() || batch.size() != this.source.batchSize() + 1) {
             this.fullyFetched = true;
         } else {
             // Remove the last one

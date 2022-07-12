@@ -63,6 +63,20 @@ public final class HugeGraphLoader {
     private final TaskManager manager;
 
     public static void main(String[] args) {
+        //args = new String[]{
+        //        "-g", "talent_graph"
+        //        , "-h", "10.21.3.24"
+        //        , "-p", "8093"
+        //        //, "-h", "hugegraph.research-pro.sy.cvte.cn"
+        //        //, "-p", "80"
+        //        , "--username", "admin"
+        //        , "--token", "dm@cvte"
+        //        , "-f", "/Users/zsm/Desktop/code-github/github/hugegraph-all/hugegraph-toolchain" +
+        //                "/hugegraph-dm/loader/talent_graph/talent_graph.json"
+        //        //, "-s", "/Users/zsm/Desktop/code-github/github/hugegraph-all/hugegraph-toolchain" +
+        //        //        "/hugegraph-dm/loader/talent_graph/talent_graph.groovy"
+        //};
+
         HugeGraphLoader loader;
         try {
             loader = new HugeGraphLoader(args);

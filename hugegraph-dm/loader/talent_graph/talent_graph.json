@@ -1,0 +1,164 @@
+{
+  "version": "2.0",
+  "structs": [
+    {
+      "id": "1",
+      "skip": false,
+      "input": {
+        "dm_page": false,
+        "custom_sql": "select c_talent_uid,c_talent_name from kg_talent_entity",
+        "type": "JDBC",
+        "table": "kg_talent_entity",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018"
+      },
+      "vertices": [{"label": "talent","id": "c_talent_uid"}]
+    },
+    {
+      "id": "2",
+      "skip": false,
+      "input": {
+        "dm_page": false,
+        "custom_sql": "select c_school_uid,c_school_name from kg_school_entity",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "table": "kg_school_entity",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018"
+      },
+      "vertices": [{"label": "school","id": "c_school_uid"}]
+    },
+    {
+      "id": "3",
+      "skip": false,
+      "input": {
+        "dm_page": false,
+        "custom_sql": "select c_company_uid,c_company_name from kg_company_entity",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "table": "kg_company_entity",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018"
+      },
+      "vertices": [{"label": "company","id": "c_company_uid"}]
+    },
+    {
+      "id": "4",
+      "skip": false,
+      "input": {
+        "custom_sql": "select  c_head_uid ,c_head_name,c_relation_name,c_tail_name,id from kg_attr_triples where c_relation_type=1 and c_attr_type ='company' ",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018",
+        "batch_size": 5000,
+        "table": "kg_attr_triples"
+      },
+      "vertices": [
+        {
+          "dm_kv_attributes": "c_relation_name,c_tail_name",
+          "label": "company",
+          "id": "c_head_uid",
+          "field_mapping": {
+            "c_head_uid": "c_company_uid",
+            "c_head_name": "c_company_name"
+          },
+          "update_strategies": {
+            "公司介绍":"OVERRIDE","经营范围":"OVERRIDE","公司类型":"OVERRIDE","注册资本":"OVERRIDE","登记机关":"OVERRIDE","注册号":"OVERRIDE","爱企查地址":"OVERRIDE","知识产权":"OVERRIDE","类目":"OVERRIDE","审核/年检日期":"OVERRIDE","爱企查ID":"OVERRIDE","营业期限":"OVERRIDE","成立日期":"OVERRIDE","经营状态":"OVERRIDE","统一社会信用代码":"OVERRIDE","企业地址":"OVERRIDE","组织机构代码":"OVERRIDE","法定代表人":"OVERRIDE","总部地点":"OVERRIDE","成立时间":"OVERRIDE","发照时间":"OVERRIDE","公司名称":"OVERRIDE","外文名":"OVERRIDE","公司性质":"OVERRIDE","公司口号":"OVERRIDE","员工数":"OVERRIDE","中文名":"OVERRIDE","年营业额":"OVERRIDE","所属行业":"OVERRIDE","简称":"OVERRIDE","地址":"OVERRIDE","创办时间":"OVERRIDE","主管部门":"OVERRIDE","类型":"OVERRIDE","办学性质":"OVERRIDE","性质":"OVERRIDE","校训":"OVERRIDE","创始人":"OVERRIDE","现任领导":"OVERRIDE","地理位置":"OVERRIDE","所属地区":"OVERRIDE","学校类别":"OVERRIDE","学校特色":"OVERRIDE","类别":"OVERRIDE","别名":"OVERRIDE","院系设置":"OVERRIDE","占地面积":"OVERRIDE","主要奖项":"OVERRIDE","官网":"OVERRIDE","董事长":"OVERRIDE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "skip": false,
+      "input": {
+        "custom_sql": "select c_head_uid ,c_head_name,c_relation_name,c_tail_name,id from kg_attr_triples where c_relation_type=1 and c_attr_type ='school' ",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018",
+        "batch_size": 5000,
+        "table": "kg_attr_triples"
+      },
+      "vertices": [
+        {
+          "dm_kv_attributes": "c_relation_name,c_tail_name",
+          "label": "school",
+          "id": "c_head_uid",
+          "field_mapping": {
+            "c_head_uid": "c_school_uid",
+            "c_head_name": "c_school_name"
+          },
+          "update_strategies": {
+            "创办时间":"OVERRIDE","外文名":"OVERRIDE","简称":"OVERRIDE","办学性质":"OVERRIDE","校训":"OVERRIDE","地址":"OVERRIDE","所属地区":"OVERRIDE","主管部门":"OVERRIDE","主要奖项":"OVERRIDE","现任领导":"OVERRIDE","学校类别":"OVERRIDE","学校特色":"OVERRIDE","院系设置":"OVERRIDE","院校代码":"OVERRIDE","现任校长":"OVERRIDE","知名校友":"OVERRIDE","类别":"OVERRIDE","校歌":"OVERRIDE","本科专业":"OVERRIDE","类型":"OVERRIDE","主要院系":"OVERRIDE","硕士点":"OVERRIDE","属性":"OVERRIDE","高职专业":"OVERRIDE","校庆日":"OVERRIDE","博士点":"OVERRIDE","占地面积":"OVERRIDE","博士后":"OVERRIDE","国家重点学科":"OVERRIDE","创办人":"OVERRIDE","建筑面积":"OVERRIDE","专职院士数":"OVERRIDE","学生人数":"OVERRIDE","知名教师":"OVERRIDE","院训":"OVERRIDE","成立时间":"OVERRIDE","学校官网":"OVERRIDE","前身":"OVERRIDE","别名":"OVERRIDE","所在地":"OVERRIDE","教职工":"OVERRIDE","隶属":"OVERRIDE","所在城市":"OVERRIDE","特点":"OVERRIDE","学历":"OVERRIDE","学校类型":"OVERRIDE","所在省份":"OVERRIDE","办学资质":"OVERRIDE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "skip": false,
+      "input": {
+        "dm_page": false,
+        "custom_sql": "select c_head_uid,c_tail_uid,c_relation_uid,c_relation_name from kg_relation_triples where c_relation_type=0 and is_deleted =0 and c_relation_name = '就职于'",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018",
+        "batch_size": 500,
+        "table": "kg_relation_triples"
+      },
+      "edges": [
+        {"label": "employ","source": ["c_head_uid"],"target": ["c_tail_uid"]}
+      ]
+    },
+    {
+      "id": "7",
+      "skip": false,
+      "input": {
+        "dm_page": false,
+        "custom_sql": "select c_head_uid,c_tail_uid,c_relation_uid,c_relation_name from kg_relation_triples where c_relation_type=0 and is_deleted =0 and c_relation_name != '就职于'",
+        "type": "JDBC",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://10.22.21.25:23313",
+        "database": "hire_service",
+        "schema": "hire_service",
+        "username": "root",
+        "password": "dm**2018",
+        "batch_size": 500,
+        "table": "kg_relation_triples"
+      },
+      "edges": [
+        {"label": "study","source":["c_head_uid"],"target": ["c_tail_uid"]
+        }
+      ]
+    }
+  ]
+}
