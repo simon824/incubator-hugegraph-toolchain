@@ -225,7 +225,8 @@ export class GraphManagementStore {
 
   @action
   validate(type: 'new' | 'edit') {
-    const nameReg = /^[A-Za-z]\w{0,47}$/;
+    // const nameReg = /^[A-Za-z]\w{0,47}$/;
+    const nameReg = /.*/;
     const hostReg = /((\d{1,3}\.){3}\d{1,3}|([\w!~*'()-]+\.)*[\w!~*'()-]+)$/;
     const portReg = /^([1-9]|[1-9]\d{1}|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$/;
     const dataName = type + 'GraphData';

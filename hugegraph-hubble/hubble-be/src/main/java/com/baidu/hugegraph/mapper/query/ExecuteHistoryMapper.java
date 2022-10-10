@@ -31,8 +31,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 @Component
 public interface ExecuteHistoryMapper extends BaseMapper<ExecuteHistory> {
 
-    @Delete("DELETE FROM `execute_history` WHERE `id` IN (" +
-            "SELECT `id` FROM `execute_history` ORDER BY `create_time` DESC " +
-            "LIMIT #{limit} OFFSET #{limit})")
+    //@Delete("DELETE FROM `execute_history` WHERE `id` IN (" +
+    //        "SELECT `id` FROM `execute_history` ORDER BY `create_time` DESC " +
+    //        "LIMIT #{limit} OFFSET #{limit})")
+    //void deleteExceedLimit(@Param("limit") int limit);
+
+    @Delete("DELETE a FROM `execute_history` as a left join " +
+            "(SELECT `id` FROM `execute_history` ORDER BY `create_time` DESC limit #{limit} " +
+            "OFFSET #{limit}) as b " +
+            "on a.id = b.id " +
+            "where b.id is not null")
     void deleteExceedLimit(@Param("limit") int limit);
 }
