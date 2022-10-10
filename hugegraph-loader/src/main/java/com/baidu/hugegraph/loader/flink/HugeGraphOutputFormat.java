@@ -90,6 +90,7 @@ public class HugeGraphOutputFormat<T> extends RichOutputFormat<T> {
             builders.put(new EdgeBuilder(loadContext, this.struct, edgeMapping),
                          new ArrayList<>());
         }
+        loadContext.updateSchemaCache();
         return builders;
     }
 
@@ -139,7 +140,7 @@ public class HugeGraphOutputFormat<T> extends RichOutputFormat<T> {
             // Add batch
             List<String> graphElements = builder.getValue();
             graphElements.add(row.toString());
-            if (graphElements.size() > elementMapping.batchSize()) {
+            if (graphElements.size() >= elementMapping.batchSize()) {
                 flush(builder.getKey(), builder.getValue());
             }
         }
