@@ -18,6 +18,7 @@ import { AsyncTaskList } from './graph-management';
 import AsyncTaskResult from './graph-management/async-tasks/AsyncTaskResult';
 import GraphManagementSidebar from './graph-management/GraphManagementSidebar';
 import { useLocationWithConfirmation } from '../hooks';
+import {Gremlin, Introduction} from './readme';
 
 const App: React.FC = () => {
   return (
@@ -64,6 +65,10 @@ const App: React.FC = () => {
         />
         <Route path="/graph-management" component={GraphManagement} />
         <Route path="/" component={GraphManagement} />
+
+        <Route path="/readme/introduction" component={Introduction} />
+        <Route path="/readme/gremlin" component={Gremlin} />
+
       </Router>
     </div>
   );

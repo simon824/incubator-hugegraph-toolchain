@@ -41,7 +41,7 @@ public class HugeGraphHubble extends SpringBootServletInitializer {
 
     public static void initEnv() {
         String hubbleHomePath = System.getProperty("hubble.home.path");
-        //hubbleHomePath="/Users/zsm/Desktop/code-github/github/hugegraph-all/hugegraph-toolchain/hugegraph-hubble";
+        hubbleHomePath="/Users/zsm/Desktop/code-github/github/hugegraph-all/hugegraph-toolchain/hugegraph-hubble";
         Ex.check(StringUtils.isNotEmpty(hubbleHomePath),
                  "The system property 'hubble.home.path' must be set");
         String loaderHomePath = System.getProperty("loader.home.path");

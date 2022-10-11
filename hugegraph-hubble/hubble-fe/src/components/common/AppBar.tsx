@@ -7,7 +7,7 @@ import './AppBar.less';
 const { Option } = Select;
 
 const AppBar: React.FC = observer(() => {
-  const [_, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   // init select language
   const [languageType, setLanguageType] = useState(localStorage.getItem('languageType') || 'zh-CN')
   const { t } = useTranslation()
@@ -31,10 +31,24 @@ const AppBar: React.FC = observer(() => {
       <div className="navigator-logo" onClick={setRoute('/')}></div>
       <div className="navigator-items">
         <div
-          className="navigator-item active"
+          className={ (location == "/" || location == "/graph-management") ? "navigator-item active" : "navigator-item" }
           onClick={setRoute('/graph-management')}
         >
           <span>{t('addition.appbar.graph-manager')}</span>
+        </div>
+
+        <div
+          className={ location == "/readme/introduction" ? "navigator-item active" : "navigator-item" }
+          onClick={setRoute('/readme/introduction')}
+        >
+          <span>{t('addition.appbar.introduction')}</span>
+        </div>
+
+        <div
+            className={ location == "/readme/gremlin" ? "navigator-item active" : "navigator-item" }
+            onClick={setRoute('/readme/gremlin')}
+        >
+            <span>{t('addition.appbar.gremlin')}</span>
         </div>
       </div>
       <div className="navigator-additions">

@@ -279,7 +279,9 @@
       "corresponding-type": "对应类型"
     },
     "appbar": {
-      "graph-manager": "图管理"
+      "graph-manager": "图管理",
+      "introduction": "简介",
+      "gremlin": "Gremlin语法"
     },
     "graphManagementHeader": {
       "graph-manager": "图管理",
