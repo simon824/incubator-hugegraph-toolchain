@@ -3,13 +3,13 @@ pipeline {
     agent { label 'LINUXOS' }
     environment {
         git_url = "git@gitlab.gz.cvte.cn:xdm/dm-secondary-development/hugegraph-toolchain.git"
-        git_branch = "dockerfile"
+        git_branch = "master"
         image_name_with_repo = "dm/hugegraph-hubble"
 
         build_cmd =''' cd ./hugegraph-hubble \
-                        && mv ./hubble-dist/pom.xml ./hubble-dist/pom-tmp.xml \
-                        && mv ./hubble-dist/dm-jenkins-pom.xml ./hubble-dist/pom.xml \
                         &&  mvn clean package -Dmaven.test.skip=true \
+                        && rm -rf ./hugegraph-hubble/bin/start-hubble.sh \
+                        && cp ../hugegraph-dm/hubble/start-hubble.sh ./hugegraph-hubble/bin/start-hubble.sh \
                         && ls -lt '''
         //jenkins 本地Dockerfile路径
         dockerfile_path = "./hugegraph-dm/hubble/Dockerfile"
@@ -46,8 +46,6 @@ pipeline {
                     script{
                         def customImage = docker.build("registry.gz.cvte.cn/${image_name_with_repo}:${imageTag}"," --pull=true --no-cache=true -f ${dockerfile_path} . ")
                         customImage.push()
-
-
                     }
                 }
             }
