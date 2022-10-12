@@ -38,14 +38,6 @@ const AppBar: React.FC = observer(() => {
         </div>
 
         <div
-            className={ location == "/readme/about" ? "navigator-item active" : "navigator-item" }
-            onClick={setRoute('/readme/about')}
-        >
-            <span>{t('addition.appbar.about')}</span>
-        </div>
-        <div >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-
-        <div
           className={ location == "/readme/introduction" ? "navigator-item active" : "navigator-item" }
           onClick={setRoute('/readme/introduction')}
         >
@@ -57,6 +49,14 @@ const AppBar: React.FC = observer(() => {
             onClick={setRoute('/readme/gremlin')}
         >
             <span>{t('addition.appbar.gremlin')}</span>
+        </div>
+
+        <div >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div
+            className={ location == "/readme/about" ? "navigator-item active" : "navigator-item" }
+            onClick={setRoute('/readme/about')}
+        >
+            <span>{t('addition.appbar.about')}</span>
         </div>
       </div>
       <div className="navigator-additions">

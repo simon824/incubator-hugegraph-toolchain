@@ -280,8 +280,8 @@
     },
     "appbar": {
       "graph-manager": "图管理",
-      "about": "关于图数据库",
-      "introduction": "使用说明",
+      "about": "关于",
+      "introduction": "图载入",
       "gremlin": "Gremlin 语法"
     },
     "graphManagementHeader": {

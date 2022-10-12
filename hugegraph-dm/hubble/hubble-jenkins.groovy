@@ -9,7 +9,8 @@ pipeline {
         build_cmd =''' cd ./hugegraph-hubble \
                         &&  mvn clean package -Dmaven.test.skip=true \
                         && rm -rf ./hugegraph-hubble/bin/start-hubble.sh \
-                        && cp ../hugegraph-dm/hubble/start-hubble.sh ./hugegraph-hubble/bin/start-hubble.sh \
+                        && cp ../hugegraph-dm/hubble/start-hubble.sh ./hugegraph-hubble/bin/ \
+                        && chmod +x ./hugegraph-hubble/bin/start-hubble.sh \
                         && ls -lt '''
         //jenkins 本地Dockerfile路径
         dockerfile_path = "./hugegraph-dm/hubble/Dockerfile"

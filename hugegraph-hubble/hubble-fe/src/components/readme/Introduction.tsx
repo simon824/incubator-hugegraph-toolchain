@@ -12,7 +12,7 @@ import './MarkDown.less';
 import './Hljs.less';
 
 // md文件
-const mdFile = "/Introduction.md"
+const mdFile = "/introduction.md"
 
 const Introduction: React.FC = observer(() => {
   const [mdContent, setMdContent] = useState("")
