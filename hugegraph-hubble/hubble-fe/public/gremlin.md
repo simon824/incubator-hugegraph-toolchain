@@ -20,6 +20,12 @@ g.V().limit(100)
 g.V().hasLabel('software')
 // 查询id为‘11’的点
 g.V('11')
+        
+//模糊查询
+g.V().has("question_text", textContains('很好'))
+//3度查询
+g.V().has('name', 'S11:C5>10>>S13').repeat(out()).until(loops().is(3)).path()
+g.V('1:Tom Hanks').repeat(both()).times(3).path()
 ```
 - 查询边
 ```java
