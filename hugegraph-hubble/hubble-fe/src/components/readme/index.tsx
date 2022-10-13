@@ -1,9 +1,11 @@
-import Introduction from './Introduction';
+import Load from './Load';
 import Gremlin from './Gremlin';
 import About from './About';
+import Algorithm from './Algorithm';
 
 export {
-  Introduction,
+  Load,
   Gremlin,
-  About
+  About,
+  Algorithm
 };

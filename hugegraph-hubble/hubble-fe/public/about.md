@@ -1,180 +1,22 @@
 
+数据挖掘图数据平台基于 Apache HugeGraph 针对图载入、图存储、图计算、图可视化等多个模块做了二次开发，旨在提升易用性、安全稳定性以及读写性能，目前主要支撑人才图谱、产业链图谱、数据血缘等应用，包括秒级实时更新，亿级数据量的批量写入与毫秒级查询等场景。由组内 Apache Committer/Contributor 负责系统架构和功能的设计与研发。后续计划集成 GraphScope 增强图分析算法和图机器学习方面的能力。
 
-<div align="center">
-    <img width="720" alt="graph-architecture" src="../src/assets/imgs/md_architecture.png" 
-style="zoom:100%;" />
-</div>
+# 图数据库场景
+- 知识图谱： 
+- 安全风控： 业务部门有内容风控的需求，希望在商户、用户、评论中通过多跳查询来识别虚假评价；在支付时进行金融风控的验证，实时多跳查询风险点。
+- 链路分析： 包括代码分析、服务治理、数据血缘管理，比如公司数据平台上有很多 ETL Job，Job 和 Job 之间存在强弱依赖关系，这些强弱依赖关系形成了一张图，在进行 ETL Job 
+的优化或者故障处理时，需要对这个图进行实时查询分析。
+- 组织架构： 公司组织架构的管理，实线汇报链、虚线汇报链、虚拟组织的管理，以及商家连锁门店的管理。比如，维护一个商家在不同区域都有哪些门店，能够进行多层关系查找或者逆向关系搜索。
+# 架构说明
+![](/about1.png)
 
-<p align="center">
-    A graph database that supports more than 10+ billion data, high performance and scalability
-</p>
-<hr/>
+# 我们做的工作
+- hugegraph loader 模块集成spark，实现亿级数据批量载入
+- 实现 hugegraph-flinkcdc-loader，实现 mysql 图数据实时 upsert 入图库
+- 支持自定义 SQL，对数据源做基础 ETL 处理后入库
+- 支持动态创建多图实例
+- hubble 支持图分析算法
+- 支持 HBase 底层存储的预分区
 
-[![License](https://img.shields.io/badge/license-Apache%202-0E78BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![Build Status](https://github.com/hugegraph/hugegraph/actions/workflows/ci.yml/badge.svg)](https://github.com/hugegraph/hugegraph/actions/workflows/ci.yml)
-[![Codecov](https://codecov.io/gh/hugegraph/hugegraph/branch/master/graph/badge.svg)](https://codecov.io/gh/hugegraph/hugegraph)
-[![GitHub Releases Downloads](https://img.shields.io/github/downloads/hugegraph/hugegraph/total.svg)](https://github.com/hugegraph/hugegraph/releases)
-
-[HugeGraph](https://hugegraph.apache.org/) is a fast-speed and highly-scalable [graph database](https://en.wikipedia.org/wiki/Graph_database). Billions of vertices and edges can be easily stored into and queried from HugeGraph due to its excellent OLTP ability. As compliance to [Apache TinkerPop 3](https://tinkerpop.apache.org/) framework, various complicated graph queries can be accomplished through [Gremlin](https://tinkerpop.apache.org/gremlin.html)(a powerful graph traversal language).
-
-## Features
-
-- Compliance to [Apache TinkerPop 3](https://tinkerpop.apache.org/), supporting [Gremlin](https://tinkerpop.apache.org/gremlin.html)
-- Schema Metadata Management, including VertexLabel, EdgeLabel, PropertyKey and IndexLabel
-- Multi-type Indexes, supporting exact query, range query and complex conditions combination query
-- Plug-in Backend Store Driver Framework, supporting RocksDB, Cassandra, ScyllaDB, HBase and MySQL now and easy to add other backend store driver if needed
-- Integration with Hadoop/Spark
-
-## Getting Started
-
-The project [homepage](https://hugegraph.apache.org/docs/) contains more information on HugeGraph and provides links to **documentation**, getting-started guides and release downloads.
-
-And here are links of other repositories:
-1. [hugegraph-toolchain](https://github.com/apache/incubator-hugegraph-toolchain) (include loader/dashboard/tool/client)
-2. [hugegraph-computer](https://github.com/apache/incubator-hugegraph-computer) (graph computing system)
-3. [hugegraph-commons](https://github.com/apache/incubator-hugegraph-commons) (include common & rpc module)
-4. [hugegraph-website](https://github.com/apache/incubator-hugegraph-doc) (include doc & website code)
-
-## Contributing
-
-Welcome to contribute to HugeGraph, please see [`How to Contribute`](CONTRIBUTING.md) for more information.
-
-## License
-
-HugeGraph is licensed under Apache 2.0 License.
-
-## Thanks
-
-HugeGraph relies on the [TinkerPop](http://tinkerpop.apache.org) framework, we refer to the storage structure of Titan and the schema definition of DataStax. 
-Thanks to TinkerPop, thanks to Titan, thanks to DataStax. Thanks to all other organizations or authors who contributed to the project.
-
-You are welcome to contribute to HugeGraph, and we are looking forward to working with you to build an excellent open source community.
-
-
-# A demo of `react-markdown`
-
-`react-markdown` is a markdown component for React.
-
-👉 Changes are re-rendered as you type.
-
-👈 Try writing some markdown on the left.
-
-## Overview
-
-* Follows [CommonMark](https://commonmark.org)
-* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)
-* Renders actual React elements instead of using `dangerouslySetInnerHTML`
-* Lets you define your own components (to render `MyHeading` instead of `h1`)
-* Has a lot of plugins
-
-## Table of contents
-
-Here is an example of a plugin in action
-([`remark-toc`](https://github.com/remarkjs/remark-toc)).
-This section is replaced by an actual table of contents.
-
-## Syntax highlighting
-
-Here is an example of a plugin to highlight code:
-[`rehype-highlight`](https://github.com/rehypejs/rehype-highlight).
-
-```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import ReactMarkdown from 'react-markdown'
-import rehypeHighlight from 'rehype-highlight'
-
-ReactDOM.render(
-  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{'# Your markdown here'}</ReactMarkdown>,
-  document.querySelector('#content')
-)
-```
-
-```json
-{
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
-```
-
-Pretty neat, eh?
-
-## GitHub flavored markdown (GFM)
-
-For GFM, you can *also* use a plugin:
-[`remark-gfm`](https://github.com/remarkjs/react-markdown#use).
-It adds support for GitHub-specific extensions to the language:
-tables, strikethrough, tasklists, and literal URLs.
-
-These features **do not work by default**.
-👆 Use the toggle above to add the plugin.
-
-| Feature    | Support              |
-| ---------: | :------------------- |
-| CommonMark | 100%                 |
-| GFM        | 100% w/ `remark-gfm` |
-
-~~strikethrough~~
-
-* [ ] task list
-* [x] checked item
-
-https://example.com
-
-## HTML in markdown
-
-⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can
-use [`rehype-raw`](https://github.com/rehypejs/rehype-raw).
-You should probably combine it with
-[`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize).
-
-<blockquote>
-  👆 Use the toggle above to add the plugin.
-</blockquote>
-
-## Components
-
-You can pass components to change things:
-
-```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import ReactMarkdown from 'react-markdown'
-import MyFancyRule from './components/my-fancy-rule.js'
-
-ReactDOM.render(
-  <ReactMarkdown
-    components={{
-      // Use h2s instead of h1s
-      h1: 'h2',
-      // Use a component instead of hrs
-      hr: ({node, ...props}) => <MyFancyRule {...props} />
-    }}
-  >
-    # Your markdown here
-  </ReactMarkdown>,
-  document.querySelector('#content')
-)
-```
-
-## More info?
-
-Much more info is available in the
-[readme on GitHub](https://github.com/remarkjs/react-markdown)!
-
-***
-
-A component by [Espen Hovlandsdal](https://espen.codes/)
-
+# TODO LIST
 

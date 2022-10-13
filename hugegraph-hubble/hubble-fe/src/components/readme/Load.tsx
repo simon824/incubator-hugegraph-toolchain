@@ -12,9 +12,9 @@ import './MarkDown.less';
 import './Hljs.less';
 
 // md文件
-const mdFile = "/introduction.md"
+const mdFile = "/load.md"
 
-const Introduction: React.FC = observer(() => {
+const Load: React.FC = observer(() => {
   const [mdContent, setMdContent] = useState("")
 
   // 读取md文件内容
@@ -34,4 +34,4 @@ const Introduction: React.FC = observer(() => {
   );
 });
 
-export default Introduction;
+export default Load;

@@ -1,0 +1,16 @@
+- 环路检测	RingsAPI
+- 交点检测	CrosspointsAPI
+- 最短路径	ShortestPathAPI
+- 全最短路径	AllShortestPathsAPI
+- 所有路径	MultiNodeShortestPathAPI
+- 模型相似度算法	FusiformSimilarityAPI
+- Neighbor Rank推荐算法	NeighborRankAPI
+- k步邻居	KneighborAPI
+- k跳算法	KoutAPI
+- 自定义路径 CustomizedPathsAPI
+- 射线检测	RaysAPI
+- 共同邻居	SameNeighborsAPI
+- 带权最短路径	WeightedShortestPathAPI
+- 单源带权最短路径	SingleSourceShortestPathAPI
+- Jaccard相似度	JaccardSimilarityAPI
+- Personal Rank推荐算法	PersonalRankAPI

@@ -1,85 +1,49 @@
-Gremlin是 Apache TinkerPop 框架下的图遍历语言。Gremlin是一种函数式数据流语言，可以使得用户使用简洁的方式表述复杂的属性图（property 
-graph）的遍历或查询。每个Gremlin遍历由一系列步骤（可能存在嵌套）组成，每一步都在数据流（data stream）上执行一个原子操作。
-Gremlin 语言包括三个基本的操作：  
-- map-step：对数据流中的对象进行转换；
-- filter-step：对数据流中的对象就行过滤；
-- sideEffect-step：对数据流进行计算统计；
+![img.png](/gremlin1.png)  
+Gremlin 是 Apache TinkerPop 框架下的图遍历语言。Gremlin 是一种函数式数据流语言，可以使得用户使用简洁的方式表述复杂的属性图（property graph）的遍历或查询。每个Gremlin 遍历由一系列步骤（可能存在嵌套）组成，每一步都在数据流（data stream）上执行一个原子操作。
 
-Tinkerpop3 模型核心概念  
-- Graph: 维护节点&边的集合，提供访问底层数据库功能，如事务功能
-- Element: 维护属性集合，和一个字符串label，表明这个element种类
-- **Vertex**: 继承自Element，维护了一组入度，出度的边集合
-- **Edge**: 继承自Element，维护一组入度，出度vertex节点集合.
-- Property: kv键值对
-- VertexProperty: 节点的属性，有一组健值对kv，还有额外的properties 集合。同时也继承自element，必须有自己的id, label.
-- Cardinality: 「single, list, set」 节点属性对应的value是单值，还是列表，或者set。
-
-### Gremlin 查询示例
-下面先介绍下本文中所用到的图的 Schema（Lable）：
-- 顶点：
-    - person
-    - software
-- 边：person
-    - uses(person -> software)
-    - develops(person -> software)
-    - knows(person -> person)
-
-下面结合上面的 Schema 给出一些常用的图操作。完整的语法见下一部分。
-#### 查询点
+# 基础查询语法
+- 基础概念
+  - V()：查询顶点，一般作为图查询的第1步，后面可以续接的语句种类繁多。例，g.V()，g.V('v_id')，查询所有点和特定点；
+  - E()：查询边，一般作为图查询的第1步，后面可以续接的语句种类繁多；
+  - id()：获取顶点、边的id。例：g.V().id()，查询所有顶点的id；
+  - label()：获取顶点、边的 label。例：g.V().label()，可查询所有顶点的label。
+  - key() / values()：获取属性的key/value的值。
+  - properties()：获取顶点、边的属性；可以和 key()、value()搭配使用，以获取属性的名称或值。例：g.V().properties('name')，查询所有顶点的 
+   name 属性；
+  - valueMap()：获取顶点、边的属性，以Map的形式体现，和properties()比较像；
+  - values()：获取顶点、边的属性值。例，g.V().values() 等于 g.V().properties().value()
+- 查询点
 ```java
-g.V().limit(100) // 查询所有点，但限制点的返回数量为100，也可以使用range(x, y)的算子，返回区间内的点数量。
-g.V().hasLabel('software') // 查询点的label值为'software'的点。
-g.V('11') // 查询id为‘11’的点。 
+// 查询所有点，但限制点的返回数量为100，也可以使用range(x, y)的算子，返回区间内的点数量。
+g.V().limit(100)
+// 查询点的label值为'software'的点
+g.V().hasLabel('software')
+// 查询id为‘11’的点
+g.V('11')
 ```
-#### 查询边
+- 查询边
 ```java
-g.E() // 查询所有边，不推荐使用，边数过大时，这种查询方式不合理，一般需要添加过滤条件或限制返回数量。
-g.E('55-81-5') // 查询边id为‘55-81-5’的边。
-g.E().hasLabel('develops') // 查询label为‘develops’的边。
-g.V('46').outE('develops') // 查询点id为‘46’所有label为‘develops’的边。 
+// 查询任意100个边
+g.E().limit(100)
+// 查询边id为‘55-81-5’的边
+g.E('55-81-5')
+// 查询label为‘develops’的边
+g.E().hasLabel('develops')
+// 查询点id为‘46’所有label为‘develops’的边
+g.V('46').outE('develops')
 ```
-#### 查询属性
+- 查询属性
 ```java
-g.V().limit(3).valueMap() // 查询点的所有属性（可填参数，表示只查询该点， 一个点所有属性一行结果）。
-g.V().limit(1).label() // 查询点的label。
-g.V().limit(10).values('name') // 查询点的name属性（可不填参数，表示查询所有属性， 一个点每个属性一行结果，只有value，没有key）。 
+// 查询点的所有属性（可填参数，表示只查询该点， 一个点所有属性一行结果）
+g.V().limit(3).valueMap()
+// 查询点的label
+g.V().limit(1).label()
+// 查询点的name属性（可不填参数，表示查询所有属性， 一个点每个属性一行结果，只有value，没有key）
+g.V().limit(10).values('name')
 ```
 
-#### 新增点
-```java
-graph.addVertex(label,'person',id,'500','age','18-24') //新增点，Label为user，ID为500，age为18-24。
-g.addV('person').property(id,'600').property('age','18-24') //新增点，Label为user，ID为500，age为18-24。 
-
-```
-
-#### 新增边
-```java
- a = graph.addVertex(label,'person',id,'501','age','18-24')
-b = graph.addVertex(label,'software',id,'502','title','love')
-a.addEdge('develops', b, 'Year','1994') // 新增边，边的两个点ID分别为501、502。 
-```
-#### 删除点
-```java
-g.V('600').drop() // 删除ID为600的点。 
-g.V().hasLabel('industry').drop().iterate()
-```
- 
-#### 删除边
-```java
-g.E('501-502-0').drop() //删除ID为“501-502-0”的边。 
-```
-### Gremlin 语法特性
-#### 基础
-
-1. V()：查询顶点，一般作为图查询的第1步，后面可以续接的语句种类繁多。例，g.V()，g.V('v_id')，查询所有点和特定点；
-1. E()：查询边，一般作为图查询的第1步，后面可以续接的语句种类繁多；
-1. id()：获取顶点、边的id。例：g.V().id()，查询所有顶点的id；
-1. label()：获取顶点、边的 label。例：g.V().label()，可查询所有顶点的label。
-1. key() / values()：获取属性的key/value的值。
-1. properties()：获取顶点、边的属性；可以和 key()、value()搭配使用，以获取属性的名称或值。例：g.V().properties('name')，查询所有顶点的 name 属性；
-1. valueMap()：获取顶点、边的属性，以Map的形式体现，和properties()比较像；
-1. values()：获取顶点、边的属性值。例，g.V().values() 等于 g.V().properties().value()
-#### 遍历
+# Gremlin 高级语法
+## 遍历
 顶点为基准：
 
 1. out(label)：根据指定的 Edge Label 来访问顶点的 OUT 方向邻接**点**（可以是零个 Edge Label，代表所有类型边；也可以一个或多个 Edge Label，代表任意给定 Edge Label 的边，下同）；
@@ -95,9 +59,9 @@ g.E('501-502-0').drop() //删除ID为“501-502-0”的边。
 1. inV()：访问边的入顶**点**，入顶点是指边的目标顶点，也就是箭头指向的顶点；
 1. bothV()：访问边的双向顶**点**；
 1. otherV()：访问边的伙伴顶**点**，即相对于基准顶点而言的另一端的顶点；
-#### 过滤
+## 过滤
 在众多Gremlin的语句中，有一大类是filter类型，顾名思义，就是对输入的对象进行条件判断，只有满足过滤条件的对象才可以通过filter进入下一步。
-##### has
+### has
 has语句是filter类型语句的代表，能够以顶点和边的属性作为过滤条件，决定哪些对象可以通过。常用的有下面几种:
 
 1. has(key,value): 通过属性的名字和值来过滤顶点或边；
@@ -123,7 +87,7 @@ g.V().properties().hasKey('age').value() // age 这个属性的所有 value
 g.V().hasNot('age').values('name') //  不含 age 这个属性的所有 顶点的 name 属性 
 ```
 
-#### 路径
+## 路径
 在使用Gremlin对图进行分析时，关注点有时并不仅仅在最终达到顶点、边或者属性，通过什么样的路径到达最终的顶点、边和属性同样重要。此时可以借助path() 来获取经过的路径信息。
 path() 返回当前遍历过的所有路径。有时需要对路径进行过滤，只选择没有环路的路径或者选择包含环路的路径，Gremlin针对这种需求提供了两种过滤路径的step：simplePath() 和cyclicPath()。
 
@@ -149,13 +113,13 @@ g.V()
 .path() 
 ```
 
-#### 迭代
+## 迭代
 
 1. repeat()：指定要重复执行的语句；
 1. times()： 指定要重复执行的次数，如执行3次；
-3.until()：指定循环终止的条件，如一直找到某个名字的朋友为止；
+   3.until()：指定循环终止的条件，如一直找到某个名字的朋友为止；
 1. emit()：指定循环语句的执行过程中收集数据的条件，每一步的结果只要符合条件则被收集，不指定条件时收集所有结果；
-5.loops()：当前循环的次数，可用于控制最大循环次数等，如最多执行3次。
+   5.loops()：当前循环的次数，可用于控制最大循环次数等，如最多执行3次。
 
 repeat() 和 until() 的位置不同，决定了不同的循环效果：
 
@@ -188,7 +152,7 @@ g.V(1)
  .path() 
 ```
 
-#### 转换
+## 转换
 
 1. map()：可以接受一个遍历器 Step 或 Lamda 表达式，将遍历器中的元素映射（转换）成**另一个类型的某个对象**（一对一），以便进行下一步处理
 1. flatMap()：可以接受一个遍历器 Step 或 Lamda 表达式，将遍历器中的元素映射（转换）成另一个类型的某个**对象流或迭代器**（一对多）。
@@ -202,7 +166,7 @@ g.V('titan').in('created').map(values('name'))
 // 创建了 titan 的作者节点的所有出边
 g.V('titan').in('created').flatMap(outE()) 
 ```
-#### 排序
+## 排序
 
 1. order()
 1. order().by()
@@ -215,7 +179,7 @@ g.V().values('name').order()
 // 按照元素属性age的值升序排列，并只输出姓名
 g.V().hasLabel('person').order().by('age', asc).values('name') 
 ```
-#### 逻辑
+## 逻辑
 
 1. is()：可以接受一个对象（能判断相等）或一个判断语句（如：[P.gt](http://P.gt)()、[P.lt](http://P.lt)()、P.inside()等），当接受的是对象时，原遍历器中的元素**必须与对象相等**才会保留；当接受的是判断语句时，原遍历器中的元素满足判断才会保留，其实接受一个对象相当于P.eq()；
 1. and()：可以接受任意数量的遍历器（traversal），原遍历器中的元素，只有在每个新遍历器中**都能生成至少一个输出的情况下**才会保留，相当于过滤器组合的与条件；
@@ -252,7 +216,7 @@ g.V().not(hasLabel('person')).label()
       values("age").is(P.not(P.eq(28))))
  .values('name') 
 ```
-#### 统计
+## 统计
 
 1. sum()：将 traversal 中的所有的数字求和；
 1. max()：对 traversal 中的所有的数字求最大值；
@@ -268,7 +232,7 @@ g.V().hasLabel('person')
     .map(outE('created').count())
     .mean() 
 ```
-#### 分支
+## 分支
 
 1. choose() ：分支选择, 常用使用场景为： choose(predicate, true-traversal, false-traversal)，根据 predicate 判断，当前对象满足时，继续 true-traversal，否则继续 false-traversal；
 1. optional()：类似于 by() 无实际意义，搭配 choose() 使用；
