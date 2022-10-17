@@ -18,7 +18,7 @@ import { AsyncTaskList } from './graph-management';
 import AsyncTaskResult from './graph-management/async-tasks/AsyncTaskResult';
 import GraphManagementSidebar from './graph-management/GraphManagementSidebar';
 import { useLocationWithConfirmation } from '../hooks';
-import {About, Gremlin, Load, Algorithm} from './readme';
+import {Intro, Gremlin, Load, Algorithm} from './readme';
 
 const App: React.FC = () => {
   return (
@@ -68,7 +68,7 @@ const App: React.FC = () => {
 
         <Route path="/readme/load" component={Load} />
         <Route path="/readme/gremlin" component={Gremlin} />
-        <Route path="/readme/about" component={About} />
+        <Route path="/readme/about" component={Intro} />
         <Route path="/readme/algorithm" component={Algorithm} />
 
       </Router>

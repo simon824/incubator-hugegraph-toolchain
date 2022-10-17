@@ -26,6 +26,8 @@ g.V().has("question_text", textContains('很好'))
 //3度查询
 g.V().has('name', 'S11:C5>10>>S13').repeat(out()).until(loops().is(3)).path()
 g.V('1:Tom Hanks').repeat(both()).times(3).path()
+g.V('2:The Da Vinci Code').in('ACTED_IN').out('ACTED_IN').in('WROTE').path()
+g.V('烃类').out('contain').out('application').out('source').path().limit(10)
 ```
 - 查询边
 ```java

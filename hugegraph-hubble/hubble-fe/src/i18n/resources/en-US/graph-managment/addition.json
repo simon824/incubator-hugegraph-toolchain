@@ -282,7 +282,7 @@
       "graph-manager": "图管理",
       "about": "关于",
       "load": "图载入",
-      "algorithm": "图算法",
+      "algorithm": "图计算",
       "gremlin": "Gremlin 语法"
     },
     "graphManagementHeader": {

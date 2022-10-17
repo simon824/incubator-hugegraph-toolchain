@@ -105,7 +105,7 @@ schema.indexLabel("schoolIndex").onV("school").by("c_school_name").secondary().i
 -----
 
 ## 通过 Hubble 载图（不推荐）
-
+**适用于小规模本地图数据载入。**
 - **定义图 Schema**
 
 ![](/load4.png)
