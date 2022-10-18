@@ -1,7 +1,4 @@
-# 关于图数据库
-
-
-# 图平台技术架构
+# 技术架构
 数据挖掘图数据平台底层基于 Apache HugeGraph 针对图载入、图存储、图计算、图可视化等多个模块做了二次开发，旨在提升易用性、安全稳定性以及读写性能，目前主要支撑人才图谱、产业链图谱、数据血缘等应用，包括秒级实时更新，亿级数据量的批量写入与毫秒级查询等场景。由组内 Apache Committer/Contributor 负责系统架构和功能的设计与研发。后续计划集成 GraphScope 增强图分析算法和图机器学习方面的能力。
 
 ![](/img.png)
@@ -26,3 +23,16 @@ dockerFile；增加step的执行策略避免label不存在是hasLabel造成的�
 - [[Feature] Introduce HugeGraphFlinkCDCLoader #290](https://github.com/apache/incubator-hugegraph-toolchain/issues/290)  
 - [[Feature] Support custom sql for hugegraph-loader module #262](https://github.com/apache/incubator-hugegraph-toolchain/issues/262)  
 - [More...](https://github.com/apache/incubator-hugegraph-toolchain/pulls?q=is%3Apr+is%3Aclosed+author%3Asimon824)
+
+# 关于图数据库
+## 关系型数据库 VS 图数据库  
+### 1.场景  
+<div align=center><img src ="/image.png"/></div>
+
+### 2.效率  
+<div align=center><img src ="/img_2.png"/></div>
+
+### 3.趋势  
+<div align=center><img src ="/img_1.png"/></div>
+
+
