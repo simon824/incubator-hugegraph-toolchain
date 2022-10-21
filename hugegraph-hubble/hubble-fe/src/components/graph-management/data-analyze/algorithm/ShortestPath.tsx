@@ -409,7 +409,7 @@ const ShortestPath = observer(() => {
 
             const timerId = dataAnalyzeStore.addTempExecLog();
             await dataAnalyzeStore.fetchGraphs({
-              url: 'shortpath',
+              url: 'shortestPath',
               type: Algorithm.shortestPath
             });
             await dataAnalyzeStore.fetchExecutionLogs();

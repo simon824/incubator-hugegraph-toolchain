@@ -476,7 +476,7 @@ const ExecLogAndQueryCollections: React.FC = observer(() => {
               });
 
               return;
-            case 'shortpath':
+            case 'shortestPath':
               algorithmAnalyzerStore.changeCurrentAlgorithm(
                 Algorithm.shortestPath
               );

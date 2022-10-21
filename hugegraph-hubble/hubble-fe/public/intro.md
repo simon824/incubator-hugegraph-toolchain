@@ -1,7 +1,7 @@
 # 技术架构
 数据挖掘图数据平台底层基于 Apache HugeGraph 针对图载入、图存储、图计算、图可视化等多个模块做了二次开发，旨在提升易用性、安全稳定性以及读写性能，目前主要支撑人才图谱、产业链图谱、数据血缘等应用，包括秒级实时更新，亿级数据量的批量写入与毫秒级查询等场景。由组内 Apache Committer/Contributor 负责系统架构和功能的设计与研发。后续计划集成 GraphScope 增强图分析算法和图机器学习方面的能力。
 
-<div align=center><img width = '888' height ='888' src ="/img.png"/></div>
+<div align=center><img width = '900' height ='888' src ="/img.png"/></div>
 
 
 **各模块说明**  
