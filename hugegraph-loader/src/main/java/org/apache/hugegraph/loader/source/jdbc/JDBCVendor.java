@@ -18,6 +18,8 @@
 package org.apache.hugegraph.loader.source.jdbc;
 
 import java.net.URISyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.client.utils.URIBuilder;
 
@@ -315,12 +317,31 @@ public enum JDBCVendor {
 
     public String buildSelectSql(JDBCSource source, Line nextStartRow) {
         StringBuilder builder = new StringBuilder();
-        builder.append("SELECT * FROM ")
-               .append(source.schema()).append(".").append(source.table());
-        if (nextStartRow != null) {
-            builder.append(" WHERE ")
-                   .append(this.buildGteClauseInCombined(nextStartRow));
+        if (source.existsCustomSQL()) {
+            builder.append(source.customSQL());
+        } else {
+            builder.append("SELECT * FROM ")
+                   .append(source.schema()).append(".").append(source.table());
         }
+        if (nextStartRow != null) {
+            if (!builder.toString().toUpperCase().contains(" WHERE ")) {
+                builder.append(" WHERE ");
+            } else {
+                builder.append(" AND ");
+            }
+            String pattern = "\\s+from\\s+(\\w+)\\s+(\\w+)\\s+(where|left|join|inner)";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(builder.toString());
+            String alias = "";
+            if (m.find()) {
+                // from table alias where|left|join|inner
+                if (m.group(1).equals(source.table())) {
+                    alias = m.group(2) + ".";
+                }
+            }
+            builder.append(this.buildGteClauseInCombined(alias, nextStartRow));
+        }
+
         builder.append(" LIMIT ").append(source.batchSize() + 1)
                .append(";");
         return builder.toString();
@@ -329,14 +350,14 @@ public enum JDBCVendor {
     /**
      * For database which support to select by where (a, b, c) >= (va, vb, vc)
      */
-    public String buildGteClauseInCombined(Line nextStartRow) {
+    public String buildGteClauseInCombined(String alias, Line nextStartRow) {
         E.checkNotNull(nextStartRow, "nextStartRow");
         StringBuilder builder = new StringBuilder();
         String[] names = nextStartRow.names();
         Object[] values = nextStartRow.values();
         builder.append("(");
         for (int i = 0, n = names.length; i < n; i++) {
-            builder.append(names[i]);
+            builder.append(alias + names[i]);
             if (i != n - 1) {
                 builder.append(", ");
             }
