@@ -94,14 +94,17 @@ public class RowFetcher {
         return this.columns;
     }
 
-    private String[] readHeader(ResultSet rs) throws SQLException {
+    private void readHeader(ResultSet rs) throws SQLException {
+        if (this.source.header() != null) {
+            this.columns = this.source.header();
+            return;
+        }
         ResultSetMetaData metaData = rs.getMetaData();
         List<String> columns = new ArrayList<>();
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
             columns.add(metaData.getColumnName(i));
         }
         this.columns = columns.toArray(new String[]{});
-        return this.columns;
     }
 
     public void readPrimaryKey() throws SQLException {
@@ -128,9 +131,7 @@ public class RowFetcher {
             return null;
         }
 
-        String select = this.source.existsCustomSQL() ?
-                        this.source.customSQL() :
-                        this.source.vendor().buildSelectSql(this.source, this.nextStartRow);
+        String select = this.source.vendor().buildSelectSql(this.source, this.nextStartRow);
 
         LOG.debug("The sql for select is: {}", select);
 
@@ -158,7 +159,7 @@ public class RowFetcher {
             throw e;
         }
 
-        if (this.source.existsCustomSQL() || batch.size() != this.source.batchSize() + 1) {
+        if (batch.size() != this.source.batchSize() + 1) {
             this.fullyFetched = true;
         } else {
             // Remove the last one
