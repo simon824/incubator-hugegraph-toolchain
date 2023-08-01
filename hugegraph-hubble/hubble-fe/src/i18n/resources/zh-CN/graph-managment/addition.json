@@ -281,9 +281,8 @@
     "appbar": {
       "graph-manager": "图管理",
       "about": "关于",
-      "load": "图载入",
-      "algorithm": "图计算",
-      "gremlin": "Gremlin 语法"
+      "load": "图载入说明",
+      "gremlin": "Gremlin 语法说明"
     },
     "graphManagementHeader": {
       "graph-manager": "图管理",

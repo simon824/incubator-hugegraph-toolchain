@@ -1,4 +1,6 @@
 ![img.png](/gremlin1.png)  
+> **可以尝试借助 chatGPT 将查询需求 + 图 Schema 作为 prompt 来生成 gremlin 语句**
+
 Gremlin 是 Apache TinkerPop 框架下的图遍历语言。Gremlin 是一种函数式数据流语言，可以使得用户使用简洁的方式表述复杂的属性图（property graph）的遍历或查询。每个Gremlin 遍历由一系列步骤（可能存在嵌套）组成，每一步都在数据流（data stream）上执行一个原子操作。
 
 # 基础查询语法

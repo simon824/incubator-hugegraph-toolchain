@@ -7,7 +7,6 @@
 ## 通过 Loader 载图（推荐）
 图载入操作首先需要准备两个文件 “**图Schema文件**” 和 “**数据源映射文件**”。
 ### 1. 定义图Schema
-可参考[人才图谱配置](https://dolphinscheduler.research-pro.sy.cvte.cn/dolphinscheduler/ui/resource/file/list/9)
 
 ```java
 /**
@@ -47,7 +46,7 @@ schema.indexLabel("schoolIndex").onV("school").by("c_school_name").secondary().i
 ```
 
 ### 2. 定义数据源映射
-可参考[人才图谱配置](https://dolphinscheduler.research-pro.sy.cvte.cn/dolphinscheduler/ui/resource/file/list/10)
+可参考[官网配置](https://hugegraph.apache.org/cn/docs/quickstart/hugegraph-loader/)
 - **Mysql 输入配置**  
   - `type`: 输入源类型，必须填 `jdbc` 或 `JDBC`，必填；
   - `vendor`: 数据库类型，可选项为 `[MySQL、PostgreSQL、Oracle、SQLServer]`，不区分大小写，必填；
@@ -80,29 +79,57 @@ schema.indexLabel("schoolIndex").onV("school").by("c_school_name").secondary().i
   - `unfold_source`: 是否展开文件的 `source` 列，效果与顶点映射中的类似，不再赘述；
   - `unfold_target`: 是否展开文件的 `target` 列，效果与顶点映射中的类似，不再赘述；
 
-### 3. 初始化图实例&配置可视化
-> 权限问题联系 @张世鸣 @刁汉财 @陈丽旋
+```json
+{
+  "version": "2.0",
+  "structs": [
+    {
+      "id": "1",
+      "skip": false,
+      "input": {
+        "type": "JDBC",
+        "table": "knowledge_graph",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://xxx:23303",
+        "database": "kg",
+        "schema": "kg",
+        "username": "default",
+        "password": "default"
+      },
+      "vertices": [
+        {"label": "concept", "id": "concept_id","selected":["concept_id","concept_name","concept_type","stage_name","subject_name","parent_id","photo_url"]},
+        {"label": "knowledge","id": "knowledge_id","selected":["knowledge_id","knowledge_name","stage_name","subject_name"]}
+      ],
+      "edges":[
+        {"label": "belong", "source": ["concept_id"], "target": ["knowledge_id"],"selected":["concept_id","knowledge_id"]}
+      ]
+    },
+    {
+      "id": "2",
+      "skip": false,
+      "input": {
+        "type": "JDBC",
+        "table": "pe",
+        "vendor": "mysql",
+        "driver": "com.mysql.cj.jdbc.Driver",
+        "url": "jdbc:mysql://xxx:23303",
+        "database": "kg",
+        "schema": "kg",
+        "username": "default",
+        "password": "default"
+      },
+      "vertices": [{"label": "question","id": "uid","selected":["uid","stage_name","subject_name"]}
+                  ],
+      "edges":[
+        {"label": "include", "source": ["uid"], "target": ["concept_id"],"selected":["uid","concept_id"]}
+      ]
+    }
+   ] 
+}
 
-**3.1. 创建配置文件**  
-定义完上述“图schema”和“数据源映射”两个文件后，如下图，在 [DolphinScheduler](https://dolphinscheduler.research-pro.sy.cvte.cn/dolphinscheduler/ui/resource/file/subdirectory/7)目录下创建 ${graph_name} 文件夹，并创建以 ${graph_name} 命名的这两个文件，json（数据源映射）和 sh（图schema）。（其中 ${graph_name} 为**全局唯一**的图实例名，）
-![](/load1.png)
 
-**3.2. 配置初始化任务**<br />在 [DolphinScheduler 图初始化工作流](https://dolphinscheduler.research-pro.sy.cvte.cn/dolphinscheduler/ui/projects/5879643923328/workflow-definition)中，随意选择一个“图数据初始化模版”，进入任务定义页面后直接点击保存，会出现弹窗，编辑如图所示内容，完成后点击添加。
-- `GRAPH_NAME`：图实例名称
-- `USER_NAME`：用户名（自定义）
-- `PASSWORD`：密码（自定义）
-
-![](/load2.png)  
-
-**3.3. 执行初始化任务**：回到工作流定义页面找到你修改过的工作流，点击上线，然后点击运行。最后可以在任务实例查看到任务执行日志。<br />**3.4. Hubble 可视化配置**
-
-- 图ID可定义为图的中文名
-- 图名称为步骤 3.1 中定义的 ${graph_name}
-- 主机名/和端口号可直接复制其他图。
-- 用户名密码为步骤 3.2 中在DS定义的USER_NAME和PASSWORD
-
-![](/load3.png)
-
+```
 -----
 
 ## 通过 Hubble 载图（不推荐）
